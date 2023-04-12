@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <link rel="stylesheet" href="../../node_modules/ol/ol.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+
+}
+      body{
+        background: #eee;
+      }
+      .map {
+        width: 90%;
+        height: 90vh;
+        margin: auto;
+        margin-top: 5vh;
+        box-shadow: 1px 1px 10px 1px gray;
+      }
+      .home-btn{
+        position: absolute;
+        bottom:50%;
+        text-shadow: 1px 1px  gray;
+        font-size: large;
+        text-decoration: none;
+        color: #333;
+        margin: .5em;
+        padding: .2em .3em;
+        border-radius: 10px;
+      }
+      .home-btn:hover{
+        font-size: larger;
+          
+      }
+    </style>
+  </head>
+  <body>
+      <!-- <div class="header">Port Map</div> -->
+      <a class='home-btn' href="../../index.html"> &lt; Back</a>
+      <div id="map" class="map"></div>
+      <button id="get-data">Get Data</button>
+      <div id="post-data"></div>
+    <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+    <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
+
+<!-- // Home
+// 19.0262447,72.8633633
+
+// PORT - JNPT
+// 18.941625, 72.938397 -->
+<!-- // let pos = -1
+// let memoryArray = []
+// let pointsArray = [fromLonLat([0,0]), fromLonLat([72.8633633,19.0262447])]
+
+// getBtn.addEventListener("click",getData) -->
