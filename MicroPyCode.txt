@@ -1,0 +1,95 @@
+import urequests as req, cellular as cell, time, ujson, gps, machine
+
+led1 = machine.Pin(27, machine.Pin.OUT, 0)
+led2 = machine.Pin(28, machine.Pin.OUT, 0)
+def ledBlink(x):
+    for i in range(x):
+        time.sleep(.5)
+        led1.value(True)
+        led2.value(False)
+        time.sleep(.5)
+        led1.value(False)
+        led2.value(True)
+    led1.value(0)
+    led2.value(0)  
+
+gps.on()
+
+# GPRS CODE
+def check_sim_status():
+    if(cell.is_sim_present()):
+        return True
+    else:
+        return False
+
+
+def connect_internet():
+    cell.gprs(False)
+    print("___Establishing Connection with internet____")
+    if(check_sim_status() == False):
+        print("!!-- No Sim Card Present --!!")
+        return
+    while True:
+        gprs = cell.gprs("internet","","")
+        if(gprs == False):
+            print("!!-- Cannot Connect to the internet --!!")
+            time.sleep(2)
+            continue
+        else:
+            print("~~~~ Connection to internet Successfull ~~~~")
+            print("Signal Quality: ",cell.get_signal_quality()[0])
+            led1.value(True)
+            time.sleep(1)
+            led1.value(False)
+            return
+
+#GPS CODE
+def check_satellites():
+    sat = gps.get_satellites()
+    if(sat[0] < 5):
+        print("!!---Please move into a open area for gps to track satellites--!!")
+        print("Tracked: ", sat[0])
+        return False
+    else:
+        print("Tracked: " ,sat[0])
+        print("Visible: " ,sat[1])
+        return True
+
+def update_gps_data():
+    for i in range(10):
+        time.sleep(.5)
+        gps.get_location()
+        time.sleep(.5)
+    return gps.get_location()
+
+def gps_lat_long():
+    while True:
+        if(check_satellites() == False):
+            time.sleep(2)
+            continue
+        else:
+            print("Wait....Getting GPS data........")
+            data = update_gps_data()
+            print("~~~~ GPS LatLong received ~~~~")
+            print(data[0],data[1])
+            led1.value(True)
+            time.sleep(1)
+            led1.value(False)
+            return data
+def post_to_server():
+    print("Posting GPS data")
+    latitude = gps.get_location()[0]
+    longitude = gps.get_location()[1]
+    boatId = cell.get_imei()
+    pos_data = ujson.dumps({"latitude": latitude,"longitude":longitude,"boatId":boatId})
+    pos = req.post("http://hungry-cowboy-boots-boa.cyclic.app/",data=pos_data, headers= {"content-type": "application/json"}).json()
+    print("Data Posted to the Server")
+
+latLong = gps_lat_long()
+connect_internet()
+# SEND DATA TO SERVER
+while True:
+    post_to_server()
+    time.sleep(2)
+    ledBlink(2)
+
