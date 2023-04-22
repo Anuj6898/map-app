@@ -9,7 +9,12 @@ import { easeOut } from 'ol/easing.js';
 import { fromLonLat } from 'ol/proj.js';
 import { getVectorContext } from 'ol/render.js';
 import { unByKey } from 'ol/Observable.js';
-import { MultiPoint } from 'ol/geom';
+import {Circle, LineString, MultiPoint} from 'ol/geom';
+import {Fill} from "ol/style";
+import {lineStyle, pointStyle} from "./Styles/styles.js"
+import {getData} from "./Apis/latLong.js"
+
+
 
 const tileLayer = new TileLayer({
   source: new OSM({
@@ -24,43 +29,39 @@ const vector = new VectorLayer({
   source: source,
 });
 
+
 const map = new Map({
   layers: [tileLayer, vector],
   target: 'map',
   view: new View({
-    center: [8120000, 2145000],
-    zoom: 12,
+    center: [8110000, 2155000],
+    zoom: 14,
     multiWorld: true,
   }),
 });
 
-
-const getBtn = document.getElementById("get-data")
-const postData = document.getElementById("post-data")
-
-function getData() {
-  return fetch("https://hungry-cowboy-boots-boa.cyclic.app")
-    .then(res => res.json())
-    .then(data => {
-      let arr = []
-      data.map((x) => {
-        arr.push(fromLonLat([x.longitude, x.latitude]))
-        // console.log(x.latitude,x.longitude,x.boatId)
-        // postData.innerText = `Latitude : ${x.latitude} Longitude: ${x.longitude} ID: ${x.boatId}`
-      })
-      return arr
-    })
-}
-
-async function addRandomFeature() {
+async function addFeature() {
   var pointsArray = []
   pointsArray = await getData().then(x => { return x })
-  // console.log(pointsArray)
-  let geom = new MultiPoint(pointsArray);
-  let feature = new Feature(geom);
-  source.addFeature(feature);
-  pointsArray = []
+  let pointFeatures = pointsArray.map(point => {
+    let geom = new Point(fromLonLat(point));
+    let feature = new Feature(geom);
+    feature.setStyle(pointStyle("blue"))
+    return feature;
+  });
+  source.addFeatures(pointFeatures);
+
+  if (pointsArray.length > 1) {
+    let lineCoords = pointsArray.map(point => {
+      return fromLonLat(point);
+    });
+    let geom = new LineString(lineCoords);
+    let feature = new Feature(geom);
+    feature.setStyle(lineStyle("red"));
+    source.addFeature(feature);
+  }
 }
+
 
 const duration = 5000;
 function flash(feature) {
@@ -98,8 +99,9 @@ function flash(feature) {
   }
 }
 
-source.on('addfeature', function (e) {
-  flash(e.feature);
-});
+// source.on('addfeature', function (e) {
+//   flash(e.feature);
+// });
 
-window.setInterval(addRandomFeature, 2000)
+// window.setInterval(addRandomFeature, 2000)
+addFeature()
