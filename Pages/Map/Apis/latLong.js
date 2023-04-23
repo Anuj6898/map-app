@@ -1,9 +1,8 @@
-import {fromLonLat} from "ol/proj";
+import {AUTH_TOKEN, BACKEND_SERVICE_URL, SERVICE_URL_CYCLIC} from "../../../configurations";
 
 
-const SERVICE_URL = "https://hungry-cowboy-boots-boa.cyclic.app"
 export function getData() {
-    return fetch(SERVICE_URL)
+    return fetch(SERVICE_URL_CYCLIC)
         .then(res => res.json())
         .then(data => {
             let arr = []
@@ -13,6 +12,30 @@ export function getData() {
             return arr
         })
 }
+
+export function getAllData() {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", AUTH_TOKEN);
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    return fetch(`${BACKEND_SERVICE_URL}/api/latlongs`, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            return result
+        })
+        .catch(error => console.log('error', error));
+
+}
+
+// console.log(await getAllData())
+
+
+
 
 let pointsArray = [
   [
