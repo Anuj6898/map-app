@@ -112,7 +112,8 @@ async function loadMap() {
   let data = response.data
 
   for (let key in data) {
-    let coordinates = data[key].map(obj => [obj.latitude, obj.longitude])
+    let coordinates = data[key].map(obj => [obj.longitude, obj.latitude])
+    console.log(coordinates, "key", key)
     addDataInMap(key, coordinates)
   }
 }
