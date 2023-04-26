@@ -38,8 +38,17 @@
           
       }
     </style>
+      <script>
+          function checkToken() {
+              const token = localStorage.getItem('token');
+
+              if (!token) {
+                  window.location.href = 'http://127.0.0.1:5173/forms/login.html'; // redirect to login page if token is not present
+              }
+          }
+      </script>
   </head>
-  <body>
+  <body onload="checkToken()">
       <!-- <div class="header">Port Map</div> -->
       <a class='home-btn' href="../../index.html"> &lt; Back</a>
       <div id="map" class="map"></div>

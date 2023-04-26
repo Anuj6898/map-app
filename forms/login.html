@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="icon" type="image/favicon.ico" href="../favicon.ico">
+    <script src="https://kit.fontawesome.com/c067ef8cfd.js" crossorigin="anonymous"></script>
+    <title>Login Form</title>
+
+    <script>
+      function checkToken() {
+        const token = localStorage.getItem('token');
+        if (token) {
+          window.location.href = '/'; // redirect to login page if token is not present
+        }
+      }
+      function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+
+        fetch('https://myfirstonlineproject.pythonanywhere.com/account/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({email: email, password: password})
+        }).then(response => {
+            if (!response.ok) {
+              // throw new Error('Network response was not ok');
+              alert("Something went wrong")
+            }
+            return response.json();
+          })
+          .then(response => {
+            console.log("log", response)
+            localStorage.setItem('token', response.data.token);
+            window.location.href = '/';
+          })
+          .catch(error => {
+            console.error('There was an error logging in:', error);
+          });
+      }
+    </script>
+</head>
+
+  <body onload="checkToken()">
+    <div>
+      <h1>Login Form</h1>
+      <form>
+        <label for="email">Username:</label>
+        <input type="text" id="email" name="email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <input type="button" value="Login" onclick="login()">
+      </form>
+    </div>
+
+  </body>
+</html>
