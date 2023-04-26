@@ -64,7 +64,6 @@ async function addDataInMap(boatId, coordinates) {
     feature.setStyle(lineStyle(lineColor));
     source.addFeature(feature);
   }
-
 }
 
 
@@ -118,7 +117,7 @@ async function loadMap() {
   }
 }
 
-loadMap()
+// loadMap()
 
 
 const duration = 5000;
@@ -161,5 +160,5 @@ function flash(feature) {
 //   flash(e.feature);
 // });
 
-// window.setInterval(addRandomFeature, 2000)
+window.setInterval(loadMap, 3000)
 

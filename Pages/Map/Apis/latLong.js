@@ -25,15 +25,9 @@ export function getAllData() {
 
     return fetch(`${BACKEND_SERVICE_URL}/api/latlongs`, requestOptions)
         .then(response => response.json())
-        .then(result => {
-            return result
-        })
+        .then(result => { return result })
         .catch(error => console.log('error', error));
-
 }
-
-// console.log(await getAllData())
-
 
 
 
