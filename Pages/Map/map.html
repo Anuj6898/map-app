@@ -32,6 +32,7 @@
         margin: .5em;
         padding: .2em .3em;
         border-radius: 10px;
+        border: 1px solid #333;
       }
       .home-btn:hover{
         font-size: larger;
@@ -50,9 +51,9 @@
   </head>
   <body onload="checkToken()">
       <!-- <div class="header">Port Map</div> -->
-      <a class='home-btn' href="../../index.html"> &lt; Back</a>
+      <a class='home-btn' href="../../index.html">Back</a>
       <div id="map" class="map"></div>
-      <button id="get-data">Get Data</button>
+      <!-- <button id="get-data">Get Data</button> -->
       <div id="post-data"></div>
     <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
     <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
