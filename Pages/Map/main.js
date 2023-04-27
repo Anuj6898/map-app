@@ -13,8 +13,8 @@ import {Circle, LineString, MultiPoint} from 'ol/geom';
 import {Fill} from "ol/style";
 import {lineStyle, pointStyle} from "./Styles/styles.js"
 import {getAllData, getData} from "./Apis/latLong.js"
-import {BoatConfig} from "./constants";
-
+import {BoatConfig, CENTRE_POINT_X, CENTRE_POINT_Y, DEFAULT_BOAT_ID, INTO_METERS, RADIUS} from "./constants";
+import { sqrt } from "math";
 
 const tileLayer = new TileLayer({
   source: new OSM({
@@ -31,7 +31,10 @@ const vector = new VectorLayer({
 
 
 const map = new Map({
-  layers: [tileLayer, vector],
+  layers: [
+      tileLayer,
+      vector
+  ],
   target: 'map',
   view: new View({
     center: [8110000, 2155000],
@@ -42,12 +45,17 @@ const map = new Map({
 
 
 async function addDataInMap(boatId, coordinates) {
-  const lineColor = BoatConfig[boatId]["lineColor"]
-  const pointColor = BoatConfig[boatId]["pointColor"]
-  coordinates.sort()
+  var lineColor = BoatConfig[DEFAULT_BOAT_ID]["lineColor"]
+  var pointColor = BoatConfig[DEFAULT_BOAT_ID]["pointColor"]
+  if(BoatConfig[boatId]){
+    lineColor = BoatConfig[boatId]["lineColor"]
+    pointColor = BoatConfig[boatId]["pointColor"]
+  }
+
+  // coordinates.sort()
 
   let pointFeatures = coordinates.map(point => {
-    let geom = new Point(fromLonLat(point));
+    let geom = new Point(fromLonLat([point[0], point[1]]));
     let feature = new Feature(geom);
     feature.setStyle(pointStyle(pointColor))
     return feature;
@@ -66,53 +74,33 @@ async function addDataInMap(boatId, coordinates) {
   }
 }
 
-
-let result = {
-  "1": [
-    [ 72.87129833333333, 19.02124 ],
-    [ 72.8722072112705, 19.022486883444827 ],
-    [ 72.8717249624107, 19.021112912277605 ],
-    [ 72.87194808539974, 19.021814590997296 ],
-    [ 72.87264912891828, 19.022731462758387 ],
-    [ 72.87296472056748, 19.022359792961505 ],
-    [ 72.87369534803419, 19.022652422979674 ],
-    [ 72.87407977988146, 19.021825192659693 ],
-    [ 72.87419921678132, 19.02252111572918 ],
-    [ 72.8730512732237, 19.021863325485146 ]
-  ],
-  "2": [
-    [ 72.87049005307729, 19.022096178311442 ],
-    [ 72.87138890071002, 19.022250130372607 ],
-    [ 72.87071627457045, 19.023623058296072 ],
-    [ 72.87176135109955, 19.02399735965082 ],
-    [ 72.87215950827513, 19.02307062328522 ],
-    [ 72.87243438036985, 19.022355290140953 ],
-    [ 72.87126908485081, 19.02258620637172 ],
-    [ 72.87033372410158, 19.023679690461365 ],
-    [ 72.87012949045794, 19.023246388811624 ],
-    [ 72.87086650316967, 19.023291300916934 ]
-  ],
-  "3": [
-    [ 72.87196449967084, 19.018225933032788 ],
-    [ 72.87213539934585, 19.020124088804216 ],
-    [ 72.87141070671363, 19.01757610635317 ],
-    [ 72.87066032735646, 19.01708088008981 ],
-    [ 72.87139334062138, 19.0149173118458 ],
-    [ 72.87174734076103, 19.016300062097212 ],
-    [ 72.87239633384189, 19.01883519740361 ],
-    [ 72.8731338057982, 19.016416826774076 ],
-    [ 72.8729896473579, 19.013898749509465 ]
-  ]
+async function isPointOutSideZone(x, y){
+  console.log("ispoint side zone", x, y)
+  var result = (CENTRE_POINT_X - x) ** 2 + (CENTRE_POINT_Y - y) ** 2
+  var result2 = sqrt(result)
+  console.log("result", result2, result2 * INTO_METERS, result2 * INTO_METERS > RADIUS)
+  return result2 * INTO_METERS > RADIUS;
 }
-
 
 async function loadMap() {
   let response = await getAllData()
   let data = response.data
 
   for (let key in data) {
-    let coordinates = data[key].map(obj => [obj.longitude, obj.latitude])
-    console.log(coordinates, "key", key)
+    // let coordinates = data[key].map(obj => [obj.longitude, obj.latitude])
+    let coordinates = []
+    var flag = 0
+    let data_key = data[key]
+    for(var i = 0; i < data_key.length; i ++){
+      var obj = data_key[i]
+      if(await isPointOutSideZone(obj.latitude, obj.longitude)){
+        // coordinates.push([obj.longitude, obj.latitude, true])
+        // flag = 1
+      } else {
+        coordinates.push([obj.longitude, obj.latitude, false])
+      }
+
+    }
     addDataInMap(key, coordinates)
   }
 }
@@ -159,6 +147,6 @@ function flash(feature) {
 // source.on('addfeature', function (e) {
 //   flash(e.feature);
 // });
-
-window.setInterval(loadMap, 3000)
+loadMap()
+// window.setInterval(loadMap, 3000)
 
