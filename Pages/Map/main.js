@@ -16,6 +16,45 @@ import {getAllData, getData} from "./Apis/latLong.js"
 import {BoatConfig, CENTRE_POINT_X, CENTRE_POINT_Y, DEFAULT_BOAT_ID, INTO_METERS, RADIUS} from "./constants";
 import { sqrt } from "math";
 
+
+const circleFeature = new Feature({
+  geometry: new Circle(fromLonLat([72.87008087597307,19.021799917866176]), RADIUS),
+});
+circleFeature.setStyle(
+  new Style({
+    renderer(coordinates, state) {
+      const [[x, y], [x1, y1]] = coordinates;
+      const ctx = state.context;
+      const dx = x1 - x;
+      const dy = y1 - y;
+      const radius = Math.sqrt(dx * dx + dy * dy);
+
+      const innerRadius = 0;
+      const outerRadius = radius * 1.4;
+
+      const gradient = ctx.createRadialGradient(
+        x,
+        y,
+        innerRadius,
+        x,
+        y,
+        outerRadius
+      );
+      gradient.addColorStop(0, 'rgba(0,255,10,0)');
+      gradient.addColorStop(0.8, 'rgba(0,255,10,0.2)');
+      gradient.addColorStop(1, 'rgba(0,255,10,0.8)');
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+      ctx.strokeStyle = 'rgba(0,255,10,.5)';
+      ctx.stroke();
+    },
+  })
+);
+
 const tileLayer = new TileLayer({
   source: new OSM({
     wrapX: false,
@@ -23,17 +62,18 @@ const tileLayer = new TileLayer({
 });
 
 const source = new VectorSource({
+  features:[circleFeature],
   wrapX: false,
 });
 const vector = new VectorLayer({
   source: source,
 });
 
-
 const map = new Map({
   layers: [
       tileLayer,
-      vector
+      vector,
+      
   ],
   target: 'map',
   view: new View({
