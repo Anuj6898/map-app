@@ -37,7 +37,7 @@ export const BoatConfig = {
 export const CENTRE_POINT_X = 19.021799917866176
 export const CENTRE_POINT_Y = 72.87008087597307
 
-export const RADIUS = 4000 // radius in meters
+export const RADIUS = 20000 // radius in meters
 
 export const INTO_METERS = 1e5 // radius in meters
 

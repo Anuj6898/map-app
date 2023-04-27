@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link rel="icon" type="image/favicon.ico" href="./favicon.ico">
+    <script src="https://kit.fontawesome.com/c067ef8cfd.js" crossorigin="anonymous"></script>
+  </head>
+  <body>  
+    <div class='navbar'>
+      <a class='logo' href="#landing-container"></a>
+    
+      <ul class='nav-list'>
+        <li><a href='/'> About Us</a></li>          
+        <li><a href='#dock-info-container'> Ships</a></li>          
+        <li><a href='/'> Contact</a></li>          
+        <li><a href='./Pages/Map/map.html'> Map</a></li>          
+      </ul>
+      </div>
+      
+      <div id="landing-container" class='landing-container'>
+        <div class='landing-header'>
+          Vessel <br/>Communications
+          <div class='landing-para'>
+            Port Traffic Management <br/>
+            <button class='landing-btn'>Port Login</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="dock-info-container" class="dock-info-container">
+        <div class="docked-ships">
+          <h2>Docked Ships</h2><div class="line"></div>
+          <div class="ship-data">
+            <div class="ship-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+            </div>
+            <div class="flex ship-number">
+              <div class="ship-number-header">IMO No.</div>
+              <div class="ship-number-number">MSCU5285725</div>
+            </div>
+            <div class="flex ship-cargo">
+                <div class="ship-load-header">Max Capacity</div>
+                <div class="ship-load">30 Tons</div>
+            </div>
+            <div class="flex clearance-status">
+              <div class="clearance-header">Clearance</div>
+              <div class="clearance">Approved</div>
+            </div>
+            <div class="flex docking-status">
+              <div class="docking-header">Docking Status</div>
+              <div class="docking">Ready to be Docked</div>
+            </div>
+            <div class="flex ship-map">
+                <a href="./Pages/Map/map.html" class="ship-map-header">View on Map</a>
+            </div>
+          </div>
+          </div>
+
+
+      <!-- Undocked Ships -->
+
+      <div id="undock-info-container" class="dock-info-container">
+        <div class="docked-ships">
+          <h2>Undocked Ships</h2><div class="line"></div>
+          <div class="ship-data">
+            <div class="ship-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+            </div>
+
+            <div class="flex ship-number">
+              <div class="ship-number-header">IMO No.</div>
+              <div class="ship-number-number">MSCU5285725</div>
+            </div>
+
+            <div class="flex ship-cargo">
+                <div class="ship-load-header">Max Capacity</div>
+                <div class="ship-load">30 Tons</div>
+            </div>
+
+            <div class="flex clearance-status">
+              <div class="clearance-header">Clearance</div>
+              <div class="clearance">Approved</div>
+            </div>
+            
+            <div class="flex docking-status">
+              <div class="docking-header">Docking Status</div>
+              <div class="docking">Ready to be Docked</div>
+            </div>
+
+            <div class="flex ship-map">
+                <a href="./Pages/Map/map.html" class="ship-map-header">View on Map</a></div>
+          </div>
+          <div class="ship-data">
+            <div class="ship-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+              </svg>
+            </div>
+        </div>
+        </div>
+    </body>
+    </html>

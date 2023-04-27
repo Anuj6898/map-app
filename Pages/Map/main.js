@@ -61,7 +61,7 @@ async function addDataInMap(boatId, coordinates) {
     return feature;
   });
   source.addFeatures(pointFeatures);
-  console.log("Sources", source)
+  // console.log("Sources", source)
 
   if (coordinates.length > 1) {
     let lineCoords = coordinates.map(point => {
@@ -75,10 +75,10 @@ async function addDataInMap(boatId, coordinates) {
 }
 
 async function isPointOutSideZone(x, y){
-  console.log("ispoint side zone", x, y)
+  // console.log("ispoint side zone", x, y)
   var result = (CENTRE_POINT_X - x) ** 2 + (CENTRE_POINT_Y - y) ** 2
   var result2 = sqrt(result)
-  console.log("result", result2, result2 * INTO_METERS, result2 * INTO_METERS > RADIUS)
+  // console.log("result", result2, result2 * INTO_METERS, result2 * INTO_METERS > RADIUS)
   return result2 * INTO_METERS > RADIUS;
 }
 
@@ -89,18 +89,21 @@ async function loadMap() {
   for (let key in data) {
     // let coordinates = data[key].map(obj => [obj.longitude, obj.latitude])
     let coordinates = []
+    let alertCoordinates = []
     var flag = 0
     let data_key = data[key]
     for(var i = 0; i < data_key.length; i ++){
       var obj = data_key[i]
       if(await isPointOutSideZone(obj.latitude, obj.longitude)){
-        // coordinates.push([obj.longitude, obj.latitude, true])
+        alertCoordinates.push([obj.longitude, obj.latitude, true])
         // flag = 1
       } else {
         coordinates.push([obj.longitude, obj.latitude, false])
       }
 
     }
+    console.log("alertCoordinates",alertCoordinates)
+    console.log("Coordinates",coordinates)
     addDataInMap(key, coordinates)
   }
 }
