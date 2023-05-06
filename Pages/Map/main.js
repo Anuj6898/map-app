@@ -18,7 +18,7 @@ import { sqrt } from "math";
 
 
 const circleFeature = new Feature({
-  geometry: new Circle(fromLonLat([72.87008087597307,19.021799917866176]), RADIUS),
+  geometry: new Circle(fromLonLat([72.87008087597307, 19.021799917866176]), RADIUS + 2000),
 });
 circleFeature.setStyle(
   new Style({
@@ -51,6 +51,9 @@ circleFeature.setStyle(
       ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
       ctx.strokeStyle = 'rgba(0,255,10,.5)';
       ctx.stroke();
+
+      // console.log('radius:', radius, 'innerRadius:', innerRadius, 'outerRadius:', outerRadius);
+
     },
   })
 );
@@ -115,11 +118,9 @@ async function addDataInMap(boatId, coordinates) {
 }
 
 async function isPointOutSideZone(x, y){
-  // console.log("ispoint side zone", x, y)
   var result = (CENTRE_POINT_X - x) ** 2 + (CENTRE_POINT_Y - y) ** 2
   var result2 = sqrt(result)
-  // console.log("result", result2, result2 * INTO_METERS, result2 * INTO_METERS > RADIUS)
-  return result2 * INTO_METERS > RADIUS;
+  return (result2 * INTO_METERS) > RADIUS;
 }
 
 async function loadMap() {
@@ -142,9 +143,10 @@ async function loadMap() {
       }
 
     }
-    console.log("alertCoordinates",alertCoordinates)
-    console.log("Coordinates",coordinates)
+    console.log("alertCoordinates", alertCoordinates)
+    console.log("Coordinates", coordinates)
     addDataInMap(key, coordinates)
+    addDataInMap("danger", alertCoordinates)
   }
 }
 
