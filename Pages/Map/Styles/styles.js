@@ -26,3 +26,19 @@ export function pointStyle(color){
         })
     });
 }
+
+
+export function centerPointStyle(color){
+    return new Style({
+        image: new CircleStyle({
+            radius: 8,
+            fill: new Fill({
+                color: 'white'
+            }),
+            stroke: new Stroke({
+                color: "black",
+                width: 3
+            })
+        })
+    });
+}
