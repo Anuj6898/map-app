@@ -11,14 +11,14 @@ import { getVectorContext } from 'ol/render.js';
 import { unByKey } from 'ol/Observable.js';
 import {Circle, LineString, MultiPoint} from 'ol/geom';
 import {Fill} from "ol/style";
-import {lineStyle, pointStyle} from "./Styles/styles.js"
+import {centerPointStyle, lineStyle, pointStyle} from "./Styles/styles.js"
 import {getAllData, getData} from "./Apis/latLong.js"
 import {BoatConfig, CENTRE_POINT_X, CENTRE_POINT_Y, DEFAULT_BOAT_ID, INTO_METERS, RADIUS} from "./constants";
 import { sqrt } from "math";
 
 
 const circleFeature = new Feature({
-  geometry: new Circle(fromLonLat([72.87008087597307, 19.021799917866176]), RADIUS + 2000),
+  geometry: new Circle(fromLonLat([CENTRE_POINT_Y, CENTRE_POINT_X]), RADIUS + 2000),
 });
 circleFeature.setStyle(
   new Style({
@@ -86,6 +86,18 @@ const map = new Map({
   }),
 });
 
+
+
+function addCentrePoint(coordinates){
+  let pointFeatures = coordinates.map(point => {
+    let geom = new Point(fromLonLat([point[0], point[1]]));
+    let feature = new Feature(geom);
+    feature.setStyle(centerPointStyle("black"))
+    feature
+    return feature;
+  });
+  source.addFeatures(pointFeatures);
+}
 
 async function addDataInMap(boatId, coordinates) {
   var lineColor = BoatConfig[DEFAULT_BOAT_ID]["lineColor"]
@@ -192,6 +204,7 @@ function flash(feature) {
 // source.on('addfeature', function (e) {
 //   flash(e.feature);
 // });
+addCentrePoint([[CENTRE_POINT_Y, CENTRE_POINT_X]])
 loadMap()
 // window.setInterval(loadMap, 3000)
 
