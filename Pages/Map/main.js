@@ -112,7 +112,12 @@ async function addDataInMap(boatId, coordinates) {
   let pointFeatures = coordinates.map(point => {
     let geom = new Point(fromLonLat([point[0], point[1]]));
     let feature = new Feature(geom);
-    feature.setStyle(pointStyle(pointColor))
+    if(point[2] === true){
+      feature.setStyle(pointStyle("red"))
+    } else {
+      feature.setStyle(pointStyle(pointColor))
+    }
+    // feature.setStyle(pointStyle(pointColor))
     return feature;
   });
   source.addFeatures(pointFeatures);
@@ -148,7 +153,9 @@ async function loadMap() {
     for(var i = 0; i < data_key.length; i ++){
       var obj = data_key[i]
       if(await isPointOutSideZone(obj.latitude, obj.longitude)){
-        alertCoordinates.push([obj.longitude, obj.latitude, true])
+        // alertCoordinates.push([obj.longitude, obj.latitude, true])
+        coordinates.push([obj.longitude, obj.latitude, true])
+
         // flag = 1
       } else {
         coordinates.push([obj.longitude, obj.latitude, false])
