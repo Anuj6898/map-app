@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap'); */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #fff;
+}
+
+.heading{
+    font-family: "Quicksand", sans-serif;
+    text-align: center;
+    font-size: 25px;
+}
+
+.home-btn{
+    position: relative;
+    /* bottom:50%; */
+    text-shadow: 1px 1px  gray;
+    font-size: large;
+    text-decoration: none;
+    color: #333;
+    margin: .5em;
+    padding: .2em .3em;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+.aboutSection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-wrap: wrap; */
+    /* min-height: 100vh; */
+    width: 100%;
+    background: #fff;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.container .card{
+    width: 260px;
+    height: 360px;
+    padding: 60px 30px;
+    margin: 20px;
+    background: #f2f3f7;
+    box-shadow: 0.1em 0.1em 0.2em #d2dce9,
+                -0.1em -0.1em .1em #ffff;
+    border-radius: 20px;
+}
+
+.container .card:hover{
+    background: #e8eaed;
+    box-shadow: 0.1em 0.1em .2em #abc3e1,
+                -0.1em -0.1em .1em #f0c6aa;
+}
+
+.container .card .content{
+    font-family: "Quicksand", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container .card .content .imgBox{
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.container .card .content .imgBox img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container .card .content .contentBox h3{
+    color: black;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.container .card .content .contentBox h4{
+    color: #434448;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.container .card .content .contentBox pre{
+    font-family: "Quicksand", sans-serif;
+    color: #434448;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+
